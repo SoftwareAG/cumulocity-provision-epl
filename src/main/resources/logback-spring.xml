@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/spring.log}"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <appender name="ROLLING"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}</file>
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- keep 30 days' worth of history capped at 1GB total size -->
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <!--
+        <appender name="GELF" class="de.siegmar.logbackgelf.GelfUdpAppender">
+            <graylogHost>s99gl01d.westeurope.cloudapp.azure.com</graylogHost>
+            <graylogPort>12201</graylogPort>
+            <maxChunkSize>508</maxChunkSize>
+            <useCompression>true</useCompression>
+            <encoder class="de.siegmar.logbackgelf.GelfEncoder">
+                <originHost>127.0.0.1</originHost>
+                <includeRawMessage>false</includeRawMessage>
+                <includeMarker>true</includeMarker>
+                <includeMdcData>true</includeMdcData>
+                <includeCallerData>false</includeCallerData>
+                <includeRootCauseData>false</includeRootCauseData>
+                <includeLevelName>false</includeLevelName>
+                <staticField>app_name:notification-microservice</staticField>
+                <staticField>os_arch:${os.arch}</staticField>
+                <staticField>os_name:${os.name}</staticField>
+                <staticField>os_version:${os.version}</staticField>
+            </encoder>
+        </appender>
+        -->
+        <appender name="GELF" class="de.siegmar.logbackgelf.GelfTcpTlsAppender">
+            <graylogHost>s99gl01d.westeurope.cloudapp.azure.com</graylogHost>
+            <graylogPort>12201</graylogPort>
+            <!--<trustAllCertificates>true</trustAllCertificates>-->
+            <encoder class="de.siegmar.logbackgelf.GelfEncoder">
+                <originHost>127.0.0.1</originHost>
+                <includeRawMessage>false</includeRawMessage>
+                <includeMarker>true</includeMarker>
+                <includeMdcData>true</includeMdcData>
+                <includeCallerData>false</includeCallerData>
+                <includeRootCauseData>false</includeRootCauseData>
+                <includeLevelName>false</includeLevelName>
+                <staticField>app_name:notification-microservice</staticField>
+                <staticField>os_arch:${os.arch}</staticField>
+                <staticField>os_name:${os.name}</staticField>
+                <staticField>os_version:${os.version}</staticField>
+            </encoder>
+        </appender>
+        <logger name="com.cumulocity.microservice.security.filter.provider.SpringSecurityContextProvider" level="ERROR"/>
+        <logger name="org.springframework.web" level="INFO"/>
+        <logger name="org.apache.commons.httpclient" level="INFO"/>
+        <logger name="httpclient.wire" level="WARN"/>
+        <logger name="realtime.loadtest" level="INFO"/>
+        <logger name="com.cumulocity" level="INFO"/>
+        <logger name="de.siegmar.logbackgelf" level="INFO"/>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="ROLLING"/>
+            <appender-ref ref="GELF" />
+        </root>
+
+    </configuration>
