@@ -1,4 +1,4 @@
-# Cumulocity microservice to provision epl from enterprise tenant to subscribed target tenant
+# Cumulocity microservice to provision epl
 
 This microservice provides a `POST` endpoint `provision` to deploy an EPL model from the enterprise tenant to a subscribed target tenant.
 A sample `POST` request looks as follows:
