@@ -25,3 +25,8 @@ hs_err_pid*
 target/*
 src/main/resources/application.properties.private
 .DS_Store
+.settings
+.flattened-pom.xml
+.project
+.classpath
+.factorypath

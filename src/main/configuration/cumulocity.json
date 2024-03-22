@@ -16,27 +16,8 @@
     "ROLE_IDENTITY_ADMIN"
   ],
   "roles": [
+    "ROLE_EPL_PROVISION_ADMIN"
   ],
-  "livenessProbe": {
-    "httpGet": {
-      "path": "/health",
-      "port": 80
-    },
-    "initialDelaySeconds": 360,
-    "periodSeconds": 10
-  },
-  "readinessProbe": {
-    "httpGet": {
-      "path": "/health",
-      "port": 80
-    },
-    "resources": {
-      "cpu": "1",
-      "memory": "1G"
-  },
-    "initialDelaySeconds": 30,
-    "periodSeconds": 10
-  },
   "buildSpec": {
     "targetBuildArchitectures": ["amd64"]
   }
